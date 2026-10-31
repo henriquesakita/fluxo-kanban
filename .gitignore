@@ -1,0 +1,21 @@
+node_modules/
+dist/
+npm-debug.log*
+
+# Gerado por scripts/sync-www.mjs a partir dos arquivos da raiz
+www/
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/capacitor-cordova-android-plugins/
+android/app/src/main/assets/public/
+*.iml
+*.hprof
+
+# Sistema
+.DS_Store
+Thumbs.db

@@ -1,0 +1,124 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Windows (instalador + portátil)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build:ci
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/*.exe
+            dist/*.blockmap
+          if-no-files-found: error
+
+  linux:
+    name: Linux (AppImage + tar.gz)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build:linux:ci
+
+      - run: npm run package:linux
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            dist/*.AppImage
+            dist/*.tar.gz
+          if-no-files-found: error
+
+  android:
+    name: Android (APK)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+
+      - run: npm ci
+
+      - run: npm run android:sync
+
+      - name: Compilar APK de debug
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Renomear APK com a versão
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk "dist/Fluxo-${VERSION}-android.apk"
+          ls -lh dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: dist/*.apk
+          if-no-files-found: error
+
+  release:
+    name: Publicar release
+    needs: [windows, linux, android]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: assets
+          merge-multiple: true
+
+      - name: Listar arquivos
+        run: ls -lh assets
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: assets/*
+          generate_release_notes: true
+          draft: false
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,89 @@
+{
+  "name": "fluxo-kanban",
+  "version": "1.2.0",
+  "description": "Quadro Kanban em tema escuro",
+  "main": "electron/main.js",
+  "author": "Sakita",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win nsis portable",
+    "build:ci": "electron-builder --win nsis portable --publish never",
+    "build:linux": "electron-builder --linux",
+    "build:linux:ci": "electron-builder --linux --publish never",
+    "package:linux": "node scripts/package-linux.mjs",
+    "sync:www": "node scripts/sync-www.mjs",
+    "android:sync": "npm run sync:www && cap sync android",
+    "android:apk": "npm run android:sync && cd android && gradlew.bat assembleDebug"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/share": "^8.0.3",
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.fluxo.kanban",
+    "productName": "Fluxo",
+    "copyright": "Copyright © 2026",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "electron/**/*",
+      "build/icon.ico"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Fluxo",
+      "artifactName": "Fluxo-Setup-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "category": "Office",
+      "executableName": "fluxo",
+      "artifactName": "Fluxo-${version}-linux-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Fluxo-Portable-${version}.${ext}"
+    }
+  }
+}

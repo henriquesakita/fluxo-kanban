@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#7C5CFF</color>
+    <color name="colorPrimaryDark">#08090E</color>
+    <color name="colorAccent">#22D3EE</color>
+    <color name="fluxoBackground">#08090E</color>
+    <color name="fluxoSurface">#10131B</color>
+    <color name="fluxoText">#E8EAF2</color>
+</resources>

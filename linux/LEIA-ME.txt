@@ -1,0 +1,38 @@
+Fluxo 1.1.0 para Linux (x64)
+============================
+
+Este pacote e portatil: nao precisa de instalador.
+
+1. Extraia o arquivo
+   tar -xzf Fluxo-1.1.0-linux-x64.tar.gz
+
+2. Execute
+   cd Fluxo-1.1.0-linux-x64
+   ./fluxo
+
+3. Instalacao opcional (atalho no menu de aplicativos)
+   ./install.sh
+
+   Isso copia o app para ~/.local/share/fluxo, cria o atalho
+   ~/.local/bin/fluxo e o item no menu de aplicativos.
+
+Dependencias comuns (Debian/Ubuntu)
+-----------------------------------
+Se o app nao abrir, instale as bibliotecas do Electron:
+
+   sudo apt install libgtk-3-0 libnss3 libasound2 libgbm1 libxss1
+
+Se aparecer erro de sandbox
+---------------------------
+   chmod +x fluxo chrome_crashpad_handler chrome-sandbox
+   ./fluxo --no-sandbox
+
+Ou, para corrigir o sandbox de forma permanente:
+
+   sudo chown root:root chrome-sandbox
+   sudo chmod 4755 chrome-sandbox
+
+Dados
+-----
+Os quadros ficam salvos em ~/.config/Fluxo (ou na pasta indicada por
+XDG_CONFIG_HOME). Use Exportar/Importar para mover entre maquinas.

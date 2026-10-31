@@ -1,0 +1,13 @@
+{
+  "appId": "com.fluxo.kanban",
+  "appName": "Fluxo",
+  "webDir": "www",
+  "backgroundColor": "#08090e",
+  "android": {
+    "backgroundColor": "#08090e",
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
