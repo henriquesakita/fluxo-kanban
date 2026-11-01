@@ -1,17 +1,49 @@
 # Fluxo — Quadro Kanban
 
-Quadro Kanban em tema escuro, feito em HTML, CSS e JavaScript puro. Roda no
-navegador, no Windows, no Linux e no Android.
+[![Demo online](https://img.shields.io/badge/demo-abrir%20no%20navegador-7c5cff)](https://henriquesakita.github.io/fluxo-kanban/)
+[![Última versão](https://img.shields.io/github/v/release/henriquesakita/fluxo-kanban?label=release&color=7c5cff)](https://github.com/henriquesakita/fluxo-kanban/releases/latest)
+[![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-3fb950)](LICENSE)
+[![Plataformas](https://img.shields.io/badge/plataformas-Windows%20%7C%20Linux%20%7C%20Android-3fb950)](#baixar)
+
+Um quadro Kanban completo, offline e multiplataforma: **o mesmo código web roda no
+navegador, no Windows, no Linux e no Android**. Interface em tema escuro, escrita
+em HTML, CSS e JavaScript puro, sem framework de UI.
+
+**[▶ Testar a demo no navegador](https://henriquesakita.github.io/fluxo-kanban/)** —
+não precisa instalar nada.
+
+![Tela do Fluxo com três colunas e cartões](docs/fluxo-desktop.png)
+
+## Destaques técnicos
+
+- **Um código, quatro destinos.** A mesma base web é empacotada com Electron para
+  Windows/Linux e com Capacitor para Android, sem reescrever a interface.
+- **Zero dependências de runtime na UI.** Sem React, Vue ou bibliotecas de
+  arrastar e soltar: só DOM, Pointer Events e `localStorage`.
+- **Arrastar e soltar com mouse e toque.** O mesmo fluxo de `pointerdown` /
+  `pointermove` / `pointerup` distingue rolagem vertical de arraste horizontal no
+  celular e trata `pointercancel` sem abrir o editor por engano.
+- **Dados que sobrevivem a atualizações.** Estado versionado (`fluxo.kanban.v2`)
+  com migração automática do formato antigo (`fluxo.kanban.v1`), exportação e
+  importação em JSON.
+- **Entrega automatizada.** O GitHub Actions compila Windows (NSIS + portátil),
+  Linux (AppImage + tar.gz) e Android (APK) em paralelo e publica tudo em um
+  release ao enviar uma tag `v*`.
 
 ## Baixar
 
-Os instaladores e o APK ficam na página de **Releases** do repositório:
+Os instaladores e o APK ficam na página de
+**[Releases](https://github.com/henriquesakita/fluxo-kanban/releases/latest)**:
 
 | Plataforma | Arquivo |
 | --- | --- |
 | Windows | `Fluxo-Setup-1.2.0.exe` (instalador) ou `Fluxo-Portable-1.2.0.exe` (portátil) |
 | Linux x64 | `Fluxo-1.2.0-linux-x86_64.AppImage` ou `Fluxo-1.2.0-linux-x64.tar.gz` |
 | Android | `Fluxo-1.2.0-android.apk` |
+
+O instalador do Windows não é assinado digitalmente, então o SmartScreen pode
+exibir um aviso na primeira execução: clique em **Mais informações** e depois em
+**Executar assim mesmo**.
 
 ## Funcionalidades
 
@@ -27,107 +59,39 @@ Os instaladores e o APK ficam na página de **Releases** do repositório:
 - Desfazer exclusão de cartão
 - Layout flexível: colunas crescem em telas largas e viram um carrossel no celular
 
-## Como abrir no navegador
+![Editor de cartão com prioridade, prazo, etiquetas e checklist](docs/fluxo-editor.png)
 
-Dê um duplo clique em `index.html` ou, no terminal:
+## Stack
 
-```powershell
-start index.html
-```
-
-## Atalhos
-
-| Tecla | Ação |
+| Camada | Tecnologia |
 | --- | --- |
-| `Enter` no campo de novo cartão | Adiciona o cartão |
-| `Shift + Enter` | Quebra de linha |
-| `Esc` | Cancela a edição / fecha o modal |
-| `Enter` em um cartão focado | Abre o editor |
+| Interface | HTML, CSS e JavaScript puro (DOM + Pointer Events) |
+| Persistência | `localStorage` com estado versionado e migração |
+| Desktop | Electron 45 + electron-builder |
+| Android | Capacitor 8 (WebView nativa) |
+| CI/CD | GitHub Actions + GitHub Releases |
+| Demo | GitHub Pages |
 
-## Estrutura
+## Como rodar
 
-```
-index.html              marcação e modal de edição
-styles.css              tema escuro e layout
-app.js                  estado, renderização, arrastar e soltar, persistência
-electron/main.js        janela do app desktop (Electron)
-capacitor.config.json   configuração do app Android (Capacitor)
-android/                projeto Android nativo gerado pelo Capacitor
-www/                    cópia dos arquivos web usada pelo Android (gerada)
-build/                  ícones do app e script dos ícones do Android
-linux/                  instalador e leia-me do pacote Linux
-scripts/                empacotamento Linux e sincronização do www
-dist/                   instaladores e pacotes gerados
+### Navegador
+
+Abra `index.html` com duplo clique ou sirva a pasta:
+
+```bash
+python -m http.server 5174
+# http://localhost:5174
 ```
 
-Os dados ficam salvos apenas no dispositivo (navegador, app desktop ou app
-Android). Para levar os quadros para outro lugar, use **Exportar** e depois
-**Importar**. Quem já usava a versão 1.0 tem os dados migrados automaticamente
-na primeira abertura.
-
-## Versão para Windows (instalável)
-
-Pré-requisito: Node.js 18 ou superior.
-
-```powershell
-npm install
-npm run build
-```
-
-O build gera em `dist/`:
-
-- `Fluxo-Setup-1.2.0.exe` — instalador com atalhos na área de trabalho e no menu Iniciar
-- `Fluxo-Portable-1.2.0.exe` — versão portátil, sem instalar
-
-Para testar em modo de desenvolvimento:
-
-```powershell
-npm start
-```
-
-O instalador não é assinado digitalmente, então o Windows pode exibir o aviso
-do SmartScreen na primeira execução. Clique em **Mais informações** e depois em
-**Executar assim mesmo**.
-
-## Versão para Linux (x64)
-
-O build gera um AppImage e um pacote portátil:
+### Desktop (Windows/Linux)
 
 ```bash
 npm install
-npm run build:linux
-npm run package:linux
+npm start          # desenvolvimento
+npm run build      # instalador + portátil para Windows
 ```
 
-Arquivos gerados em `dist/`:
-
-- `Fluxo-1.2.0-linux-x86_64.AppImage` — execute com `chmod +x` e duplo clique
-- `Fluxo-1.2.0-linux-x64.tar.gz` — pacote portátil
-
-```bash
-tar -xzf Fluxo-1.2.0-linux-x64.tar.gz
-cd Fluxo-1.2.0-linux-x64
-./fluxo
-```
-
-Instalação opcional (atalho no menu de aplicativos):
-
-```bash
-./install.sh
-```
-
-Dependências comuns em Debian/Ubuntu:
-
-```bash
-sudo apt install libgtk-3-0 libnss3 libasound2 libgbm1 libxss1
-```
-
-O AppImage só é gerado em Linux (no Windows o empacotador não consegue criar os
-symlinks). O workflow do GitHub Actions cuida disso automaticamente.
-
-## Versão para Android (APK)
-
-O app Android é um invólucro do Capacitor em volta do mesmo código web.
+### Android
 
 ```bash
 npm install
@@ -136,23 +100,29 @@ cd android
 ./gradlew assembleDebug
 ```
 
-O APK sai em `android/app/build/outputs/apk/debug/app-debug.apk`.
+O APK sai em `android/app/build/outputs/apk/debug/app-debug.apk`. O SDK e o JDK
+não são necessários na máquina: o workflow do GitHub Actions compila o APK.
 
-Para instalar no celular, copie o APK e abra no aparelho, permitindo a
-instalação de fontes desconhecidas.
+## Estrutura
 
-Detalhes:
+```
+index.html              marcação e modal de edição
+styles.css              tema escuro, layout e ajustes para toque
+app.js                  estado, renderização, arrastar e soltar, persistência
+electron/main.js        janela do app desktop (Electron)
+capacitor.config.json   configuração do app Android (Capacitor)
+android/                projeto Android nativo gerado pelo Capacitor
+www/                    cópia dos arquivos web usada pelo Android e pela demo (gerada)
+build/                  ícones do app e script dos ícones do Android
+linux/                  instalador e leia-me do pacote Linux
+scripts/                empacotamento Linux e sincronização do www
+docs/                   capturas de tela usadas neste README
+dist/                   instaladores e pacotes gerados
+```
 
-- `appId`: `com.fluxo.kanban`
-- Nome exibido: **Fluxo**
-- Android mínimo: 7.0 (API 24)
-- Exportar abre o menu de compartilhamento do Android para salvar o JSON
-- Importar usa o seletor de arquivos do sistema
-
-### Gerar o APK sem Android SDK na máquina
-
-O workflow `.github/workflows/release.yml` compila o APK no GitHub Actions
-(`ubuntu-latest`) com JDK 21 e o Android SDK, e anexa o resultado ao release.
+Os dados ficam salvos apenas no dispositivo (navegador, app desktop ou app
+Android). Para levar os quadros para outro lugar, use **Exportar** e depois
+**Importar**.
 
 ## Publicar uma versão
 
@@ -163,5 +133,13 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-Ele compila Windows, Linux e Android em paralelo e publica tudo em um release
-do GitHub.
+Ele compila Windows, Linux e Android em paralelo e publica tudo em um release do
+GitHub. A demo web é publicada separadamente pelo workflow
+`.github/workflows/pages.yml` a cada alteração em `index.html`, `styles.css` ou
+`app.js`.
+
+## Autor
+
+**Henriques Sakita** — [github.com/henriquesakita](https://github.com/henriquesakita)
+
+Licenciado sob a [MIT](LICENSE).
