@@ -9,7 +9,7 @@ Um quadro Kanban completo, offline e multiplataforma: **o mesmo código web roda
 navegador, no Windows, no Linux e no Android**. Interface em tema escuro, escrita
 em HTML, CSS e JavaScript puro, sem framework de UI.
 
-**[▶ Testar a demo no navegador](https://henriquesakita.github.io/fluxo-kanban/)** —
+**[Testar a demo no navegador](https://henriquesakita.github.io/fluxo-kanban/)** —
 não precisa instalar nada.
 
 ![Tela do Fluxo com três colunas e cartões](docs/fluxo-desktop.png)
