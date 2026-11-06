@@ -5,9 +5,12 @@
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-3fb950)](LICENSE)
 [![Plataformas](https://img.shields.io/badge/plataformas-Windows%20%7C%20Linux%20%7C%20Android-3fb950)](#baixar)
 
-Um quadro Kanban completo, offline e multiplataforma: **o mesmo código web roda no
-navegador, no Windows, no Linux e no Android**. Interface em tema escuro, escrita
-em HTML, CSS e JavaScript puro, sem framework de UI.
+**Um código, quatro plataformas: navegador, Windows, Linux e Android.**
+
+Quadro Kanban completo e offline, com interface em tema escuro escrita em HTML,
+CSS e JavaScript puro, sem framework de UI.
+
+`JavaScript` `Electron` `Capacitor` `GitHub Actions` `GitHub Pages`
 
 **[Testar a demo no navegador](https://henriquesakita.github.io/fluxo-kanban/)** —
 não precisa instalar nada.
